@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { KafkaService } from './kafka.service';
-import { DepositService } from '../deposit/deposit.service';
+import { DepositService } from '../Database/deposit/deposit.service';
+import { WithdrawService } from '../Database/withdraw/withdraw.service';
 
 @Injectable()
 export class LendingVaultService {
   constructor(
     private readonly depositService: DepositService,
+    private readonly withdrawService: WithdrawService,
     private readonly kafkaService: KafkaService,
   ) {
     this.consumeLendingEvents();
@@ -23,13 +25,21 @@ export class LendingVaultService {
 
   private handleMessage(message: any): void {
     // Handle lending event message here
-    console.log('Received lending event:', {
+    console.log('Received handleMessageDeposit event:', {
       ...message,
     });
+    if (message.topic === 'withdraw-topic') {
+      this.persistToDatabaseWithdraw(message.value);
+    } else {
+      this.persistToDatabaseDeposit(message.value);
+    }
     // Persist to PostgreSQL database
-    this.persistToDatabase(message.value);
   }
-  async persistToDatabase(data: any): Promise<void> {
+
+  async persistToDatabaseWithdraw(data: any): Promise<void> {
+    this.withdrawService.create(JSON.parse(data));
+  }
+  async persistToDatabaseDeposit(data: any): Promise<void> {
     this.depositService.create(JSON.parse(data));
   }
   async depositToKafka(amount: number): Promise<void> {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CloudEvent } from 'cloudevents';
 import { Consumer, Kafka, Producer } from 'kafkajs';
-import { DepositEntity } from 'src/deposit/deposit.entity';
+import { DepositEntity } from 'src/Database/deposit/deposit.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
