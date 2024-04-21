@@ -7,17 +7,21 @@ import { DepositEntity } from './deposit/deposit.entity';
 import { DepositModule } from './deposit/deposit.module';
 import { KafkaModule } from './kafka/kafka.module';
 import { KafkaService } from './kafka/kafka.service';
+import { ConfigModule } from '@nestjs/config';
+import { DepositService } from './deposit/deposit.service';
+import { LendingVaultService } from './kafka/lending-vault.service';
 
 @Module({
   imports: [
     DepositModule,
     KafkaModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'roundhouse.proxy.rlwy.net',
-      port: 36872,
+      host: process.env.HOST,
+      port: Number(process.env.PORT),
       username: 'postgres',
-      password: 'LQYEqKBZmnyynismwQRokecQXGCgynEJ',
+      password: process.env.PW,
       database: 'railway',
       entities: [DepositEntity],
       synchronize: true, // Chỉ sử dụng trong môi trường development
@@ -26,15 +30,6 @@ import { KafkaService } from './kafka/kafka.service';
     // TypeOrmModule.forFeature([DepositEntity]),
   ],
   controllers: [AppController],
-  providers: [AppService, KafkaService],
+  providers: [AppService, KafkaService, DepositService, LendingVaultService],
 })
-export class AppModule {
-  constructor(private readonly kafkaService: KafkaService) {}
-
-  async onApplicationBootstrap() {
-    console.log('xem log onApplicationBootstrap');
-
-    // await this.kafkaService.connect();
-    // await this.kafkaService.subscribe('test-topic');
-  }
-}
+export class AppModule {}

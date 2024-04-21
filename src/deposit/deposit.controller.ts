@@ -12,8 +12,8 @@ export class DepositController {
   }
 
   @Post()
-  create(@Body() user: DepositEntity): Promise<DepositEntity> {
-    return this.depositService.create(user);
+  create(@Body() data: DepositEntity): Promise<DepositEntity> {
+    return this.depositService.create(data);
   }
 
   @Delete(':id')
