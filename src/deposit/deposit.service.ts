@@ -14,6 +14,8 @@ export class DepositService {
     return this.depositRepository.find();
   }
   async create(deposit: DepositEntity): Promise<DepositEntity> {
+    console.log('Cường xem data truyền vào', deposit);
+
     return this.depositRepository.save(deposit);
   }
   async remove(id: number): Promise<void> {

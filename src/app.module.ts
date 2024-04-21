@@ -26,8 +26,7 @@ import { LendingVaultService } from './kafka/lending-vault.service';
       entities: [DepositEntity],
       synchronize: true, // Chỉ sử dụng trong môi trường development
     }),
-    KafkaModule,
-    // TypeOrmModule.forFeature([DepositEntity]),
+    TypeOrmModule.forFeature([DepositEntity]),
   ],
   controllers: [AppController],
   providers: [AppService, KafkaService, DepositService, LendingVaultService],

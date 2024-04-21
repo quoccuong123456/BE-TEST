@@ -30,7 +30,7 @@ export class LendingVaultService {
     this.persistToDatabase(message.value);
   }
   async persistToDatabase(data: any): Promise<void> {
-    this.depositService.create(data);
+    this.depositService.create(JSON.parse(data));
   }
   async depositToKafka(amount: number): Promise<void> {
     const message = `Deposit event: ${amount}`;

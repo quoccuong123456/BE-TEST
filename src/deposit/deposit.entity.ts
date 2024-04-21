@@ -3,17 +3,21 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class DepositEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  time: Date;
   @Column()
-  hash: string;
-
+  type: string;
   @Column()
-  fromAddress: string;
+  specversion: string;
   @Column()
-  toAddress: string;
-
-  @Column()
-  ownerAddress: string;
-  @Column()
-  amountDeposit: number;
+  @Column({ type: 'jsonb' })
+  data: {
+    hash: string;
+    fromAddress: string;
+    toAddress: string;
+    ownerAddress: string;
+    amountDeposit: number;
+    unixTimestamp: number;
+  };
 }
