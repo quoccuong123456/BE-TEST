@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 
 import { KafkaService } from './kafka.service';
 
@@ -21,6 +21,19 @@ export class KafkaController {
   async sendMessageWithdraw(@Body() message: any) {
     try {
       await this.kafkaService.sendMessage('withdraw-topic', message);
+      return { success: true, message: 'Message sent successfully' };
+    } catch (error) {
+      return { success: false, message: 'Failed to send message', error };
+    }
+  }
+  @Put('update-deposit/:id')
+  async sendMessageEditDeposit(@Param('id') id: string, @Body() message: any) {
+    try {
+      await this.kafkaService.sendMessageUpdate(
+        'deposit-topic-update',
+        id,
+        message,
+      );
       return { success: true, message: 'Message sent successfully' };
     } catch (error) {
       return { success: false, message: 'Failed to send message', error };

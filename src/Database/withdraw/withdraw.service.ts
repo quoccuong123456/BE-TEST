@@ -14,8 +14,6 @@ export class WithdrawService {
     return this.withdrawRepository.find();
   }
   async create(withdraw: WithdrawEntity): Promise<WithdrawEntity> {
-    console.log('Cường xem data withdraw truyền vào', withdraw);
-
     return this.withdrawRepository.save(withdraw);
   }
   async remove(id: number): Promise<void> {

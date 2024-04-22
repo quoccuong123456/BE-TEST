@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { DepositService } from './deposit.service';
 import { DepositEntity } from './deposit.entity';
 
@@ -19,5 +27,12 @@ export class DepositController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.depositService.remove(+id);
+  }
+  @Put(':id')
+  edit(
+    @Param('id') id: string,
+    @Body() data: DepositEntity,
+  ): Promise<DepositEntity> {
+    return this.depositService.updateDeposit(id, data);
   }
 }

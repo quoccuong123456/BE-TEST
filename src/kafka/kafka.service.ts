@@ -68,7 +68,27 @@ export class KafkaService {
       console.log('123', error);
     }
   }
-
+  async sendMessageUpdate(
+    topic: string,
+    idUpdate: string,
+    message: DepositEntity,
+  ): Promise<void> {
+    const cloudEvent = new CloudEvent({
+      type: topic,
+      specversion: process.env.EVENT_SPEC_VERSION,
+      data: { ...message },
+      id: idUpdate,
+    });
+    console.log('cuong xem send message', topic, JSON.stringify(cloudEvent));
+    try {
+      await this.producer.send({
+        topic,
+        messages: [{ value: JSON.stringify(cloudEvent) }],
+      });
+    } catch (error) {
+      console.log('123', error);
+    }
+  }
   async disconnect(): Promise<void> {
     await this.producer.disconnect();
     await this.consumer.disconnect();

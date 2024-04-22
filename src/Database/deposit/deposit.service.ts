@@ -18,6 +18,23 @@ export class DepositService {
 
     return this.depositRepository.save(deposit);
   }
+  async updateDeposit(id: string, newData: any): Promise<DepositEntity> {
+    // Fetch the deposit entity from the database
+    const deposit = await this.depositRepository.findOne({ where: { id } });
+
+    if (!deposit) {
+      throw new Error('Deposit not found');
+    }
+
+    // Update the entity with the new data
+    deposit.type = newData.type;
+    deposit.specversion = newData.specversion;
+    deposit.data = newData.data;
+    console.log('cuong xem data change', deposit);
+    return;
+    // Save the updated entity back to the database
+    // return await this.depositRepository.save(deposit);
+  }
   async remove(id: number): Promise<void> {
     await this.depositRepository.delete(id);
   }
