@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 
 export function setupSwagger(app: INestApplication): void {
   const options = new DocumentBuilder()
-    .setTitle('Your API')
+    .setTitle('API TEST CANDIDATE')
     .setDescription('API description')
     .setVersion('1.0')
     .build();
